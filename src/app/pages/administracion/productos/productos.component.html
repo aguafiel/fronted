@@ -1,0 +1,461 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.01)" size="default" color="#fff" type="ball-atom" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="my-container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title">PRODUCTOS</h4>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/dashboard/main">
+                                    <i class="fas fa-home"></i> Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">Productos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="ngxTableHeader">
+                                        <ul class="header-buttons-left ms-0 mb-0">
+                                            <li class="dropdown">
+                                                <h2>
+                                                    <strong>Tabla Productos</strong>
+                                                </h2>
+                                            </li>
+                                            <li class="dropdown m-l-20">
+                                                <label for="search-input"><i
+                                                        class="material-icons search-icon">search</i></label>
+                                                <input placeholder="Buscar" type="text"
+                                                       class="browser-default search-field"
+                                                       (keyup)='filterDatatable($event)' aria-label="Search box">
+                                            </li>
+                                        </ul>
+                                        <ul class="header-buttons">
+                                            <li>
+                                                <button mat-mini-fab color="primary" (click)='addRow(modalRegistro)'>
+                                                    <mat-icon class="col-white">add</mat-icon>
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <ngx-datatable #table class="material" [rows]="listData" [columns]="columns"
+                                                   [sortType]="'multi'" [columnMode]="'force'" [headerHeight]="50"
+                                                   [footerHeight]="50" [rowHeight]="'60'" [limit]="10"
+                                                   (sort)="onSort($event)">
+                                        <!-- user image -->
+                                        <ngx-datatable-column name="Imagen" [width]="120">
+                                            <ng-template let-row="data" let-value="value" let-i="index"
+                                                         ngx-datatable-cell-template>
+                                                <td class="table-img padding-0">
+                                                    <img width="40" *ngIf="value!==null" src="{{ value }}"/>
+                                                </td>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Unidad" [width]="200">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                <span class="badge col-orange shadow-style">{{value.nombre}}</span>
+
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Categoria" [width]="200">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                <span class="badge col-blue shadow-style">{{value.nombre}}</span>
+
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Codigo" [width]="130"></ngx-datatable-column>
+                                        <ngx-datatable-column name="Bonus" [width]="200">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                <span *ngIf="row.isBonus===1"
+                                                      class="badge col-green shadow-style">Bonus</span>
+
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                        <ngx-datatable-column name="Nombre" [width]="120"></ngx-datatable-column>
+                                        <ngx-datatable-column name="Precio" [width]="200">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                S/. {{value}}
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+                                        <ngx-datatable-column name="Status" [width]="200">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                <span *ngIf="value===1"
+                                                      class="badge col-green shadow-style">Activado</span>
+                                                <span *ngIf="value===0"
+                                                      class="badge col-red shadow-style">Desactivado</span>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+
+
+                                        <ngx-datatable-column name="Acciones" sortable="false" [width]="120">
+                                            <ng-template let-value="value" let-row="row" let-rowIndex="rowIndex"
+                                                         ngx-datatable-cell-template>
+                                                <span>
+                                                    <button class="btn tblActnBtn" title="Agregar nuevos precios"
+                                                            (click)='AgregarNuevosPrecios(row, rowIndex, nuevoPrecio)'>
+                                                        <mat-icon class="material-icons col-orange"> monetization_on
+                                                        </mat-icon>
+                                                    </button>
+                                                    <button class="btn tblActnBtn" title="Editar Productos"
+                                                            (click)='editRow(row, rowIndex, editZona)'>
+                                                        <i class="material-icons col-blue">mode_edit</i>
+                                                    </button>
+                                                    <button class="btn tblActnBtn" (click)='deleteRow(row)'
+                                                            title="Eliminar Productos">
+                                                        <i class="material-icons col-red">delete</i>
+                                                    </button>
+                                                </span>
+                                            </ng-template>
+                                        </ngx-datatable-column>
+                                    </ngx-datatable>
+                                    <!-- Add Record Modal Window -->
+                                    <ng-template #modalRegistro let-modal>
+                                        <div class="modal-header addModal">
+                                            <h4 class="modal-title" id="modal-add">
+                                                <div class="modal-header ">
+
+                                                    <div class="modal-about">
+                                                        <div class="font-weight-bold p-t-10 font-17">
+                                                            Nuevo Producto
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h4>
+                                            <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss()">
+                                                <span aria-hidden="true"><i class="material-icons">close</i></span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <form class="register-form" [formGroup]="register"
+                                                  (ngSubmit)="onAddRowSave(register)">
+
+                                                <div class="row">
+                                                    <div class="col-col-12 mb-0">
+                                                        <mat-label>Categoria</mat-label>
+                                                        <ng-select [(ngModel)]="selectedCategoria" appearance="outline"
+                                                                   formControlName="categoriaId">
+                                                            <ng-option *ngFor="let categoria of categorias"
+                                                                       [value]="categoria.id">
+                                                                {{categoria.nombre}}</ng-option>
+                                                        </ng-select>
+
+                                                    </div>
+                                                    <div class="col-col-12 mb-0">
+                                                        <mat-label>Unidad de Medida</mat-label>
+                                                        <ng-select [(ngModel)]="selectedUnidad" appearance="outline"
+                                                                   formControlName="unidadId">
+                                                            <ng-option *ngFor="let unidad of unidades"
+                                                                       [value]="unidad.id">
+                                                                {{unidad.nombre}}</ng-option>
+                                                        </ng-select>
+
+                                                    </div>
+                                                    <div class="col-12 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Nombre</mat-label>
+                                                            <input matInput formControlName="nombre">
+
+                                                            <mat-error
+                                                                    *ngIf="register.get('nombre').hasError('required')">
+                                                                Nombre es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-12 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label> C&oacute;digo</mat-label>
+                                                            <input matInput formControlName="codigo">
+                                                            <mat-error
+                                                                    *ngIf="register.get('codigo').hasError('required')">
+                                                                C&oacute;digo es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-6 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Precio</mat-label>
+                                                            <input matInput formControlName="precio">
+                                                            <mat-error
+                                                                    *ngIf="register.get('precio').hasError('required')">
+                                                                Precio es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-6 mb-1">
+
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Bonus</mat-label>
+                                                            <mat-select formControlName="isBonus">
+                                                                <mat-option [value]="0">NO</mat-option>
+                                                                <mat-option [value]="1">SI</mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                    *ngIf="register.get('isBonus').hasError('required')">
+                                                                Bonus es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                                        <button class="btn-space" [disabled]="!register.valid"
+                                                                mat-raised-button color="primary">Registrar
+                                                        </button>
+                                                        <button type="button" mat-button
+                                                                (click)="cerrarModal('add')">Cancelar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </ng-template>
+                                    <!-- Edit Record Modal Window -->
+                                    <ng-template #editZona let-modal>
+                                        <div class="modal-header editModal">
+                                            <h4 class="modal-title" id="modal-edit">
+                                                <div class="modal-header ">
+                                                    <div class="modal-about">
+                                                        <div class="font-weight-bold p-t-10 font-17">
+                                                            Editar Producto
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </h4>
+                                            <button type="button" class="close" aria-label="Close"
+                                                    (click)="modal.dismiss('Cross click')">
+                                                <span aria-hidden="true"><i class="material-icons">close</i></span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form [formGroup]="editForm" (ngSubmit)="onEditSave(editForm)">
+                                                <div class="input-field col s12 d-none">
+                                                    <input formControlName="id" class="form-control" type="hidden">
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-col-12 mb-0">
+                                                        <mat-label>Categoria</mat-label>
+                                                        <ng-select [(ngModel)]="selectedCategoria" appearance="outline"
+                                                                   formControlName="categoriaId">
+                                                            <ng-option *ngFor="let categoria of categorias"
+                                                                       [value]="categoria.id">
+                                                                {{categoria.nombre}}</ng-option>
+                                                        </ng-select>
+
+                                                    </div>
+                                                    <div class="col-col-12 mb-0">
+                                                        <mat-label>Unidad de Medida</mat-label>
+                                                        <ng-select [(ngModel)]="selectedUnidad" appearance="outline"
+                                                                   formControlName="unidadId">
+                                                            <ng-option *ngFor="let unidad of unidades"
+                                                                       [value]="unidad.id">
+                                                                {{unidad.nombre}}</ng-option>
+                                                        </ng-select>
+
+                                                    </div>
+                                                    <div class="col-12 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Nombre</mat-label>
+                                                            <input matInput formControlName="nombre">
+
+                                                            <mat-error
+                                                                    *ngIf="register.get('nombre').hasError('required')">
+                                                                Nombre es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-12 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label> C&oacute;digo</mat-label>
+                                                            <input matInput formControlName="codigo">
+                                                            <mat-error
+                                                                    *ngIf="register.get('codigo').hasError('required')">
+                                                                C&oacute;digo es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+
+                                                    <div class="col-6 mb-1">
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Precio</mat-label>
+                                                            <input matInput formControlName="precio">
+                                                            <mat-error
+                                                                    *ngIf="register.get('precio').hasError('required')">
+                                                                Precio es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-6 mb-1">
+
+                                                        <mat-form-field class="example-full-width" appearance="outline">
+                                                            <mat-label>Bonus</mat-label>
+                                                            <mat-select formControlName="isBonus">
+                                                                <mat-option [value]="0">NO</mat-option>
+                                                                <mat-option [value]="1">SI</mat-option>
+                                                            </mat-select>
+                                                            <mat-error
+                                                                    *ngIf="register.get('isBonus').hasError('required')">
+                                                                Bonus es requerido
+                                                            </mat-error>
+                                                        </mat-form-field>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                    <div class="button-demo">
+                                                        <button mat-raised-button type="submit"
+                                                                color="primary">Registrar
+                                                        </button>
+                                                        <button mat-button type="button"
+                                                                (click)="cerrarModal('edit')">Cancelar
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </ng-template>
+
+                                    <!---MODAL AGREGAR NUEVOS PRECIOS ALPRODUCTO---->
+                                    <ng-template #nuevoPrecio let-modal>
+                                        <div class="modal-header editRowModal">
+                                            <div class="modal-header w-full">
+                                                <div class="d-flex w-full">
+                                                    <div class="modal-about  w-full">
+                                                        <div class="font-weight-bold p-t-10 font-17">
+                                                            <h4 class="modal-title">Agregar Nuevos Precios
+                                                                para {{nombreProducto}}</h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="d-table" style="width:35%">
+                                                        <div class="d-table-cell align-middle">
+                                                            <button type="button"
+                                                                    class="btn btn-sm  btn-outline-success"
+                                                                    (click)="pushPrecios()">
+                                                                <span class="fa fa-plus"></span>&nbsp;&nbsp;Agregar
+                                                            </button>&nbsp;
+                                                            <button type="button" class="btn btn-sm btn-outline-dark"
+                                                                    (click)="cerrarModalPrecio()">
+                                                                Cancelar
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-col-12 mb-0">
+                                                    <div class="body table-responsive">
+                                                        <table class="table table-sm">
+                                                            <thead>
+                                                            <tr>
+
+                                                                <th>Nombre</th>
+                                                                <th>Precio</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+
+                                                            <tr *ngFor="let item of listaPrecios;let i= index">
+
+                                                                <td>{{item.nombreProducto}}</td>
+                                                                <td>
+                                                                    <div *ngIf="!item.edit">S/. {{item.precio}}</div>
+                                                                    <input class="mat-form-field-outline form-control "
+                                                                           *ngIf="item.edit"
+                                                                           type="number"
+                                                                           [value]="item.precio"
+                                                                           (change)="setPrecio(i,$event.target.value,'old')"
+                                                                           (keyup)="setPrecio(i,$event.target.value,'old')"
+                                                                           style="width: 150px;">
+                                                                </td>
+                                                                <td>
+                                                                    <div *ngIf="!item.edit; else divCancelar">
+                                                                        <button class="btn btn-sm "
+                                                                                (click)="editPrecio(i,'old')">
+                                                                            <i class="material-icons col-green">mode_edit</i>
+                                                                        </button>
+                                                                        <button class="btn btn-sm "
+                                                                                (click)="deletePrecio(i,'old')"><i
+                                                                                class="material-icons col-red">delete</i>
+                                                                        </button>
+                                                                    </div>
+                                                                    <ng-template #divCancelar>
+                                                                        <button class="btn btn-sm btn-outline-primary"><span
+                                                                                class="fa fa-save"
+                                                                                (click)="registerPrecio(i,'old')"
+                                                                        >&nbsp;Registrar</span></button>
+                                                                        <button class="btn btn-sm btn-outline-dark "><span
+                                                                                style="color: gray"
+                                                                                (click)="cancelaEditPrecio(i,'old')">Cancelar</span>
+                                                                        </button>
+                                                                    </ng-template>
+
+                                                                </td>
+                                                            </tr>
+                                                            <tr *ngFor="let item of listNuevosPrecios;let j= index">
+                                                                <td>{{item.nombreProducto}}</td>
+                                                                <td>
+                                                                    <div *ngIf="!item.edit">S/. {{item.precio}}</div>
+                                                                    <input class="mat-form-field-outline form-control "
+                                                                           *ngIf="item.edit"
+                                                                           type="number"
+                                                                           [value]="item.precio"
+                                                                           (keyup)="setPrecio(j,$event.target.value,'new')"
+                                                                           (change)="setPrecio(j,$event.target.value,'new')"
+                                                                           style="width: 150px;">
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn btn-sm "
+                                                                            (click)="deletePrecio(j,'new')"><span
+                                                                            class="fa fa-trash"
+                                                                            style="color: red"></span>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                        <div class="align-right" *ngIf="listNuevosPrecios.length>0">
+                                                            <button class="btn btn-sm btn-outline-primary"
+                                                                    (click)="registerListPrecioService()">REGISTRAR
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>

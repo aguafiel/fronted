@@ -1,0 +1,132 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.01)" size="default" color="#fff" type="ball-atom" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="my-container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title">EMPLEADOS</h4>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/dashboard/main">
+                                    <i class="fas fa-home"></i> Home</a>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/emplados/add-empleado">
+                                    Empleados</a>
+                            </li>
+                            <li class="breadcrumb-item active">Agregar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <form class="register-form" [formGroup]="register" (ngSubmit)="onAddRowSave(register)">
+                                <div class="row">
+                                    <div class="col-12 mb-1">
+                                        <div class="col-col-12 mb-2">
+                                            <label for="tipoEmpleado">Tipo Empleado</label>
+                                            <ng-select [(ngModel)]="selectedTipoEmpleado" appearance="outline"
+                                                formControlName="tipoEmpleadoId">
+                                                <ng-option *ngFor="let item of listTipoEmpleado" [value]="item.id">
+                                                    {{item.descripcion}}
+                                                </ng-option>
+                                            </ng-select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Tipo Documento</mat-label>
+                                            <input matInput formControlName="tipoDocumento">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Nro Documento</mat-label>
+                                            <input matInput formControlName="nroDocumento">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Nombres</mat-label>
+                                            <input matInput formControlName="nombre">
+                                            <mat-error *ngIf="register.get('nombre').hasError('required')">
+                                                Nombre es requerido
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Apellidos</mat-label>
+                                            <input matInput formControlName="apellidos">
+                                            <mat-error *ngIf="register.get('apellidos').hasError('required')">
+                                                Apellidos es requerido
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Sexo</mat-label>
+                                            <mat-select formControlName="genero">
+                                                <mat-option value="MASCULINO">MASCULINO</mat-option>
+                                                <mat-option value="FEMENINO">FEMENINO</mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="register.get('genero').hasError('required')">
+                                                Genero es requerido
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Fecha Nacimiento</mat-label>
+                                            <input matInput formControlName="fechaNacimiento">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Celular</mat-label>
+                                            <input matInput formControlName="celular">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Email</mat-label>
+                                            <input matInput formControlName="email">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-12 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Direcci&oacute;n</mat-label>
+                                            <input matInput formControlName="direccion">
+
+                                        </mat-form-field>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                        <button class="btn-space" [disabled]="!register.valid" mat-raised-button
+                                            color="primary">Registrar
+                                        </button>
+                                        <button type="button">Cancelar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

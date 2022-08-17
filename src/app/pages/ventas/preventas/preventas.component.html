@@ -1,0 +1,74 @@
+<div class="my-container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title">PREVENTA</h4>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/dashboard/main">
+                                    <i class="fas fa-home"></i> Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">Preventa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="row">
+                    <div class="col-12" style="text-align:right">
+                        <!-- <button type="button" class="btn btn-sm btn-success" (click)="actualizarOrdenamiento()">Guardar
+                            Cambios</button> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let item of listClientes">
+                        <div class="cards">
+                            <div class="container">
+                                <div class="drop-card " style="cursor: pointer">
+                                    <span class="cardtitle noselect">
+                                        <div class="d-flex">
+                                            <div class="w-100">
+                                                <a [routerLink]="['/ventas/preventas/visita']"
+                                                    [queryParams]="{day: day,clienteId:item.id}">
+                                                    {{item.persona.nombre}}<br />
+                                                    {{item.persona.apellidos}}</a>
+                                            </div>
+                                            <div style="width:150px;text-align:right;">
+                                                #{{item.nroOrden}}</div>
+                                        </div>
+                                        <hr style="margin-top: 2px;margin-bottom: 3px;" />
+                                        <div class="w-100">
+                                            <div class="d-flex">
+                                                <div class="w-100">{{item.persona.direccion}}</div>
+                                                <div style="width: 250px;text-align: right;">
+                                                    <span
+                                                        style="border-bottom: 1px solid rgb(238, 64, 64);">{{item.zona.descripcion}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mt-2">
+                                            <div class="w-100">
+
+                                                <span class="badge col-gray shadow-style">{{item.codigo}}</span>
+                                            </div>
+                                            <div style="width:150px;text-align:right;">
+                                                <span class="badge col-blue shadow-style">
+                                                    {{item.comprobante.descripcion}}</span>
+                                            </div>
+
+                                        </div>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>

@@ -1,0 +1,195 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.01)" size="default" color="#fff" type="ball-atom" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="my-container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title">CLIENTES</h4>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/dashboard/main">
+                                    <i class="fas fa-home"></i> Home</a>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/administracion/clientes">
+                                    Clientes</a>
+                            </li>
+                            <li class="breadcrumb-item active">Agregar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="body">
+                            <form class="register-form" [formGroup]="editForm" (ngSubmit)="actualizarCliente(editForm)">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+
+                                        <ng-select [(ngModel)]="selectedTipoPersona" 
+                                        formControlName="tipoPersonaId"
+                                        placeholder="Tipo Cliente"
+                                            appearance="outline" (change)="handleChangeTipoPersona()">
+                                            <ng-option *ngFor="let item of listTipoPersona" [value]="item.nombre">
+                                                {{item.descripcion}}</ng-option>
+                                        </ng-select>
+
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <div class="d-flex">
+                                            <mat-form-field class="example-full-width" appearance="outline">
+                                                <mat-label *ngIf="formTextFields.isNatural;else typeRuc">
+                                                    DNI
+                                                </mat-label>
+                                                <ng-template #typeRuc>
+                                                    <mat-label>RUC</mat-label>
+                                                </ng-template>
+                                                <input matInput formControlName="nroDocumento">
+                                                <mat-error *ngIf="editForm.get('nroDocumento').hasError('required')">
+                                                    campo es requerido
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <div>
+                                                <button class="btn btn-sm btn-success my-3" type="button"
+                                                        (click)="searchDataSunatService()" title="buscar informacion">
+                                                    <span class="fa fa-search"></span>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Codigo</mat-label>
+                                            <input matInput formControlName="codigo">
+                                            <mat-error *ngIf="editForm.get('codigo').hasError('required')">
+                                                campo es requerido
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label *ngIf="formTextFields.isNatural;else typeRazon">
+                                                Nombres
+                                            </mat-label>
+                                            <ng-template #typeRazon>
+                                                <mat-label>Razon Social</mat-label>
+                                            </ng-template>
+                                            <input matInput formControlName="nombre">
+                                            <mat-error *ngIf="editForm.get('nombre').hasError('required')">
+                                                campo es requerido
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1" *ngIf="formTextFields.isNatural">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Apellidos</mat-label>
+                                            <input matInput formControlName="apellidos">
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1" *ngIf="formTextFields.isNatural">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Sexo</mat-label>
+                                            <mat-select formControlName="genero">
+                                                <mat-option value="MASCULINO">MASCULINO</mat-option>
+                                                <mat-option value="FEMENINO">FEMENINO</mat-option>
+                                            </mat-select>
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1" *ngIf="formTextFields.isNatural">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Fecha de Nacimiento</mat-label>
+                                            <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento">
+                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                            <mat-datepicker #picker></mat-datepicker>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Celular</mat-label>
+                                            <input matInput formControlName="celular">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Email</mat-label>
+                                            <input matInput formControlName="email">
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Direcci&oacute;n</mat-label>
+                                            <input matInput formControlName="direccion">
+
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                     
+                                        <ng-select formControlName="zonaId" 
+                                        placeholder="Zona"
+                                        appearance="outline">
+                                            <ng-option *ngFor="let item of listZonas" [value]="item.id">
+                                                {{item.descripcion}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                      
+                                        <ng-select formControlName="diaId" 
+                                        placeholder="Dia Visita"
+                                        appearance="outline">
+                                            <ng-option *ngFor="let item of listDias" [value]="item.id">
+                                                {{item.descripcion}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+
+                                        <mat-form-field class="example-full-width" appearance="outline">
+                                            <mat-label>Orden</mat-label>
+                                            <input matInput formControlName="nroOrden">
+                                        </mat-form-field>
+                                    </div>
+                                    
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <ng-select formControlName="empleadoId"
+                                                   placeholder="Prevendedor"
+                                                   appearance="outline">
+                                            <ng-option *ngFor="let item of listEmpleado" [value]="item.id">
+                                                {{item.persona.nombre}}&nbsp;{{item.persona.apellidos}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                </div>
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 mb-1">
+                                        <ng-select formControlName="comprobanteId"
+                                                   placeholder="Comprobante"
+                                                   appearance="outline">
+                                            <ng-option *ngFor="let item of listComprobantes" [value]="item.id">
+                                                {{item.descripcion}}</ng-option>
+                                        </ng-select>
+                                    </div>
+                                <div class="row">
+                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                                        <button class="btn-space" [disabled]="!editForm.valid" mat-raised-button
+                                            color="primary">Registrar
+                                        </button>
+                                        <a type="button" mat-button [routerLink]="['/administracion/clientes']">Cancelar
+                                        </a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>

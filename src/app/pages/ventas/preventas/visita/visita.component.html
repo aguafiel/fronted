@@ -1,0 +1,249 @@
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.01)" size="default" color="#fff" type="ball-atom" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>
+
+<div class="my-container">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="block-header">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <ul class="breadcrumb breadcrumb-style ">
+                            <li class="breadcrumb-item">
+                                <h4 class="page-title">PREVENTA</h4>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/dashboard/main">
+                                    <i class="fas fa-home"></i> Home</a>
+                            </li>
+                            <li class="breadcrumb-item bcrumb-1">
+                                <a routerLink="/ventas/preventas">
+                                    Preventa
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item active">Visita</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix">
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="card">
+                            <div class="card-body" *ngIf="informacionCliente!=null;else laodingInformacionCliente">
+                                <div class="d-flex">
+                                    <div style="width: 100px">Cliente</div>
+                                    <div class="">
+                                        &nbsp;:&nbsp;&nbsp;{{informacionCliente.persona.nombre}}&nbsp;&nbsp;{{informacionCliente.persona.apellidos}}</div>
+                                </div>
+                                <div class="d-flex">
+                                    <div style="width: 100px">Direcci&oacute;n</div>
+                                    <div class="">&nbsp;:&nbsp;&nbsp;{{informacionCliente.persona.direccion}}</div>
+                                </div>
+                                <div class="d-flex">
+                                    <div style="width: 100px">Celular</div>
+                                    <div class="">&nbsp;:&nbsp;&nbsp;{{informacionCliente.persona.celular}}</div>
+                                </div>
+                                <div class="d-flex">
+                                    <div style="width: 100px">Zona</div>
+                                    <div class="">&nbsp;:&nbsp;&nbsp;{{informacionCliente.zona.descripcion}}</div>
+                                </div>
+                            </div>
+                            <ng-template #laodingInformacionCliente>
+                                Cargando Informacion...
+                            </ng-template>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Productos</h4>
+                                <hr/>
+                                <div class="card-productos">
+                                    <div *ngFor="let item of listProductos;let i =index" class="product-item">
+                                        <div class="d-flex">
+                                            <div class="w-100">
+                                                <div class="d-table">
+                                                    <div class="d-table-cell align-middle">
+                                                        <img width="50"
+                                                             *ngIf=" item.imagen!=null && item.imagen.length>0; else imagenElse"
+                                                             src="{{ item.imagen }}"/>
+                                                    </div>
+                                                    <ng-template #imagenElse>
+                                                        <div style="height: 50px;" class="d-table-cell align-middle">
+                                                            <div
+                                                                    style="padding:7px 10px;background:rgb(163, 162, 162,.5);border-radius:15px">
+                                                                {{item.nombre.charAt(0).toUpperCase()}}
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                    <div class="d-table-cell align-middle">
+                                                        {{item.nombre}} &nbsp;&nbsp;
+                                                        <span *ngIf="item.isBonus===1"
+                                                              class="badge col-green shadow-style">Bonus</span>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="d-table">
+                                                <div class="d-table-cell align-middle ">
+                                                    <button class="btn btn-success btn-sm"
+                                                            (click)="handleSeleccionarProducto(i)">Agregar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-around align-items-center">
+                            <div class="col-12 col-sm-4 " *ngFor="let mnc of listMNC;let index=index">
+                                <div class="card mnc-card" [ngClass]="{'mnc-card-active':mnc.active}"
+                                     (click)="handleActiveMnc(index)">
+                                    <div class="card-body">
+                                        {{mnc.abrev}}&nbsp;:&nbsp; {{mnc.descripcion}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-sm-6col-md-6 col-lg-6">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <h4>Productos Seleccionados</h4>
+                                <hr/>
+                                <div class="card-productos">
+                                    <table class="table  table-borderless ">
+                                        <thead>
+                                        <tr>
+                                            <th colspan="2">Producto</th>
+                                            <th>Cantidad</th>
+                                            <th class="align-center">Precio</th>
+                                            <th class="align-center">Subtotal</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let item of listProductosSeleccionados;let i =index">
+                                            <td>
+                                                <img width="50" *ngIf=" item.imagen!=null && item.imagen.length>0; else imagenElse"
+                                                     src="{{ item.imagen }}"/>
+                                                <ng-template #imagenElse>
+                                                    <div style="height: 50px;" class="d-table-cell align-middle">
+                                                        <div
+                                                                style="padding:7px 10px;background:rgb(163, 162, 162,.5);border-radius:15px">
+                                                            {{item.nombre.charAt(0).toUpperCase()}}
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </td>
+                                            <td>{{item.nombre}}</td>
+                                            <td style="cursor:pointer;"
+                                                (click)="abrirModal('cantidad',modalCantidad,item)">  {{item.cantidad_products}}&nbsp;{{item.unidad.nombre.toUpperCase()}}</td>
+                                            <td class="align-center" style="cursor:pointer;"
+                                                (click)="abrirModal('precios',modalPrecios,item)"
+                                                *ngIf="item.precios.length>0;else preciosTable">
+                                                S./{{item.precioFinal}}
+                                            </td>
+                                            <ng-template #preciosTable>
+                                                <td class="align-center">
+                                                    S./{{item.precioFinal}}
+                                                </td>
+                                            </ng-template>
+
+                                            <td class="align-center"> S./{{item.subtotal}}</td>
+                                            <td>
+                                                <button class="btn btn-outline-danger btn-sm"
+                                                        (click)="eliminarProducto(i)">Quitar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="4" style="text-align: right">Total</td>
+                                            <td colspan="1" style="text-align: center">{{subtotalPreventa}}</td>
+
+                                        </tr>
+                                        </tfoot>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <label>OBSERVACIONES</label>
+                                <textarea class="form-control" rows="4" [(ngModel)]="observacion">
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <div class="align-right">
+                                <button class="btn  btn-primary" (click)="registrarPreventa()">Registrar</button>&nbsp;&nbsp;
+                                <button class="btn  btn-dark">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <ng-template #modalPrecios let-modal>
+        <div class="modal-header editRowModal">
+            <h4 class="modal-title" id="modal-basic-title">
+                <div class="modal-header ">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-10 font-17">
+                            Precios
+                        </div>
+                    </div>
+                </div>
+            </h4>
+            <button type="button" class="close" aria-label="Close"
+                    (click)="cerrarModal('precios')">
+                <span aria-hidden="true"><i class="material-icons">close</i></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="card-productos">
+                <div class="product-item" *ngFor="let item of productSelectedModal.precios">
+                    <p (click)="handleSeleccionarPrecio(item.precio)">S/. {{item.precio.toFixed(2)}}</p>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template #modalCantidad let-modal>
+        <div class="modal-header editRowModal">
+            <h4 class="modal-title">
+                <div class="modal-header ">
+                    <div class="modal-about">
+                        <div class="font-weight-bold p-t-10 font-17">
+                            Cantidad
+                        </div>
+                    </div>
+                </div>
+            </h4>
+            <button type="button" class="close" aria-label="Close"
+                    (click)="cerrarModal('cantidad')">
+                <span aria-hidden="true"><i class="material-icons">close</i></span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                <input class="form-control " type="number" min="1" [(ngModel)]="cantidadFinal">
+                <div class="mt-2 align-right">
+                    <button class="btn btn-sm btn-success" (click)="setCantidadFinal()">Aceptar</button>
+                    <button class="btn btn-sm " (click)="cerrarModal('cantidad')">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

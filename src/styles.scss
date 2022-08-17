@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+// @import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "public/scss/mis-estilos";
+@import "~jquery.fancytree/dist/skin-win8/ui.fancytree.min.css";
+ .modal ,.modal-backdrop{
+  z-index: 999 !important;
+}
